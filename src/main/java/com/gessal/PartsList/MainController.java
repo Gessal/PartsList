@@ -1,11 +1,13 @@
 package com.gessal.PartsList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Optional;
 
 @Controller
@@ -60,7 +62,15 @@ public class MainController {
 
     /******************Вывод всех записей********************/
     @GetMapping(path="/all")
-    public @ResponseBody Iterable<Part> getAllParts() {
-        return partRepository.findAll();
+    public String getAllParts(@RequestParam(name="page", required=false, defaultValue="1") String pageN, Model model) {
+        Pageable page = new PageRequest(Integer.parseInt(pageN)-1, 10);
+        Page<Part> partsPage = partRepository.findAll(page);
+        int[] pages = new int[partsPage.getTotalPages()];
+        for (int i = 0; i < pages.length; i++) {
+            pages[i] = i+1;
+        }
+        model.addAttribute("pages", pages);
+        model.addAttribute("parts", partsPage);
+        return "mainPage";
     }
 }

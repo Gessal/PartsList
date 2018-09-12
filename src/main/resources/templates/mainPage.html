@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <table border="1">
+        <caption>Список деталей для сборки компьютеров на складе</caption>
+        <tr>
+            <td><b>Наименование</b></td>
+            <td><b>Необходимость</b></td>
+            <td><b>Количество</b></td>
+            <td><b>Редактировать</b></td>
+            <td><b>Удалить</b></td>
+        </tr>
+        <tr th:each="part : ${parts}">
+            <td th:text="${part.name}"></td>
+            <td th:text="${part.is_need} ? 'Да' : 'Нет'"></td>
+            <td th:text="${part.count}"></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <div>Страницы:
+        <tr th:each="page : ${pages}">
+            <td><a th:href="@{/Parts-List/all(page=${page})}"><b th:text="${page}"></b></a></td>
+        </tr>
+    </div>
+</body>
+</html>

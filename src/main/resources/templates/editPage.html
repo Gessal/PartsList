@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактировать</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <form method="get" action="/Parts-List/edit">
+        <input type="text" name="name" placeholder="Наименование" th:value="${name}"/>
+        <input type="checkbox" name="is_need" placeholder="Поиск по названию"/>
+        <input type="text" name="count" placeholder="Поиск по названию"/>
+        <button type="submit">Применить</button>
+    </form>
+</body>
+</html>

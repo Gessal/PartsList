@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>PARTS</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -18,14 +18,18 @@
             <td th:text="${part.name}"></td>
             <td th:text="${part.is_need} ? 'Да' : 'Нет'"></td>
             <td th:text="${part.count}"></td>
-            <td></td>
+            <td><a th:href="@{/Parts-List/edit(id=${part.id})}"><b>Редактировать</b></a></td>
             <td></td>
         </tr>
     </table>
     <div>Страницы:
         <tr th:each="page : ${pages}">
-            <td><a th:href="@{/Parts-List/all(page=${page})}"><b th:text="${page}"></b></a></td>
+            <td><a th:href="@{/Parts-List/all(find=${find},page=${page})}"><b th:text="${page}"></b></a></td>
         </tr>
     </div>
+    <form method="get">
+        <input type="text" name="find" placeholder="Поиск по названию" th:value="${find}"/>
+        <button type="submit">Поиск</button>
+    </form>
 </body>
 </html>

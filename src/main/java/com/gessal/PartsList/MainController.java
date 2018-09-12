@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -16,36 +19,81 @@ public class MainController {
     private PartRepository partRepository;
 
     /******************Добавление записи********************/
-    @GetMapping(path="/add")
-    public @ResponseBody String addNewPart (@RequestParam String name, @RequestParam String is_need, @RequestParam String count) {
-        Part part = new Part();
-        part.setName(name);
-        if (is_need.equals("true")) {
-            part.setIs_need(true);
-        } else {
-            part.setIs_need(false);
+    @PostMapping("add")
+    public String addNewPart (@RequestParam(required = false) String name, @RequestParam(required = false) Boolean is_need, @RequestParam(required = false) Integer count, Model model) {
+        if (!name.isEmpty() && count != null) {
+            Part part = new Part();
+            part.setName(name);
+            if (is_need == null) {
+                part.setIs_need(false);
+            } else {
+                part.setIs_need(true);
+            }
+            part.setCount(count);
+            partRepository.save(part);
         }
-        part.setCount(Integer.parseInt(count));
-        partRepository.save(part);
-        return "Added";
+        Pageable page = new PageRequest(0, 10);
+        Page<Part> partsPage = partRepository.findAll(page);
+        int[] pages = new int[partsPage.getTotalPages()];
+        for (int i = 0; i < pages.length; i++) {
+            pages[i] = i+1;
+        }
+        model.addAttribute("pages", pages);
+        model.addAttribute("parts", partsPage);
+        return "mainPage";
     }
 
     /******************Удаление записи********************/
     @GetMapping(path="/del")
-    public @ResponseBody String delPart (@RequestParam String id) {
+    public String delPart (@RequestParam String id, Model model) {
         Optional<Part> part = partRepository.findById(Integer.parseInt(id));
         partRepository.delete(part.get());
-        return "Deleted";
+        Pageable page = new PageRequest(0, 10);
+        Page<Part> partsPage = partRepository.findAll(page);
+        int[] pages = new int[partsPage.getTotalPages()];
+        for (int i = 0; i < pages.length; i++) {
+            pages[i] = i+1;
+        }
+        model.addAttribute("pages", pages);
+        model.addAttribute("parts", partsPage);
+        
+        return "mainPage";
     }
 
-    /******************Редактирование записи********************/
+    /******************Форма редактирования записи********************/
     @GetMapping(path="/edit")
-    public @ResponseBody String editPart (@RequestParam String id, Model model) {
+    public String editPartForm (@RequestParam String id, Model model) {
         Part part = partRepository.findById(Integer.parseInt(id)).get();
+        model.addAttribute("id", id);
         model.addAttribute("name", part.getName());
         model.addAttribute("is_need", part.getIs_need());
         model.addAttribute("count", part.getCount());
         return "editPage";
+    }
+
+    /******************Редактирование записи********************/
+    @PostMapping(path = "/edit")
+    public String editPart (@RequestParam Integer id, @RequestParam(required = false) String name, @RequestParam(required = false) Boolean is_need, @RequestParam(required = false) Integer count, Model model) {
+        if (!name.isEmpty() && count != null) {
+            Part part = partRepository.findById(id).get();
+            part.setName(name);
+            if (is_need == null) {
+                part.setIs_need(false);
+            } else {
+                part.setIs_need(true);
+            }
+            part.setCount(count);
+            partRepository.save(part);
+        }
+        Pageable page = new PageRequest(0, 10);
+        Page<Part> partsPage = partRepository.findAll(page);
+        int[] pages = new int[partsPage.getTotalPages()];
+        for (int i = 0; i < pages.length; i++) {
+            pages[i] = i+1;
+        }
+        model.addAttribute("pages", pages);
+        model.addAttribute("parts", partsPage);
+        return "mainPage";
     }
 
     /******************Вывод всех записей********************/
@@ -62,7 +110,6 @@ public class MainController {
         for (int i = 0; i < pages.length; i++) {
             pages[i] = i+1;
         }
-        //--------------------
         model.addAttribute("find", findName);
         model.addAttribute("pages", pages);
         model.addAttribute("parts", partsPage);

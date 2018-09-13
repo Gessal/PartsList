@@ -5,10 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <form method="post" action="/Parts-List/edit">
+    <form method="post" action="/Parts-List/all">
         <input type="hidden" name="id" th:value="${id}"/>
         <input type="text" name="name" placeholder="Наименование" th:value="${name}"/>
-        <input type="checkbox" name="is_need" th:checked="${is_need}"/>
+        <input type="checkbox" name="need" th:checked="${need}"/>
         <input type="number" name="count" min="0" th:value="${count}"/>
         <button type="submit">Применить</button>
     </form>

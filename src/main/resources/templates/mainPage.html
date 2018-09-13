@@ -8,33 +8,44 @@
     <table border="1">
         <caption>Список деталей для сборки компьютеров на складе</caption>
         <tr>
-            <td><b>Наименование</b></td>
+            <td><a th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='nameUp')}"><b>D</b></a><a th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='nameDown')}"><b>U</b></a><b>Наименование</b></td>
             <td><b>Необходимость</b></td>
-            <td><b>Количество</b></td>
+            <td><a th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='countUp')}"><b>D</b></a><a th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='countDown')}"><b>U</b></a><b>Количество</b></td>
             <td><b>Редактировать</b></td>
             <td><b>Удалить</b></td>
         </tr>
         <tr th:each="part : ${parts}">
             <td th:text="${part.name}"></td>
-            <td th:text="${part.is_need} ? 'Да' : 'Нет'"></td>
+            <td th:text="${part.need} ? 'Да' : 'Нет'"></td>
             <td th:text="${part.count}"></td>
             <td><a th:href="@{/Parts-List/edit(id=${part.id})}"><b>Редактировать</b></a></td>
-            <td><a th:href="@{/Parts-List/del(id=${part.id})}"><b>Удалить</b></a></td>
+            <td><a th:href="@{/Parts-List/all(id=${part.id})}"><b>Удалить</b></a></td>
+        </tr>
+        <tr class="emptyRow"></tr>
+        <tr>
+            <td>Можно собрать</td>
+            <td th:text="${n}"></td>
+            <td>компьютеров.</td>
         </tr>
     </table>
     <div>Страницы:
         <tr th:each="page : ${pages}">
-            <td><a th:href="@{/Parts-List/all(find=${find},page=${page})}"><b th:text="${page}"></b></a></td>
+            <td><a th:href="@{/Parts-List/all(find=${find}, need=${need}, page=${page})}"><b th:text="${page}"></b></a></td>
         </tr>
     </div>
-    <form method="get">
+    <form method="get" action="/Parts-List/all">
         <input type="text" name="find" placeholder="Поиск по названию" th:value="${find}"/>
         <button type="submit">Поиск</button>
+        <select name="need">
+            <option value="all" th:selected="${selectedAll}">Все</option>
+            <option value="y" th:selected="${selectedY}">Необходимые</option>
+            <option value="n" th:selected="${selectedN}">Необязательные</option>
+        </select>
     </form>
     <form method="post" action="add">
-        <input type="text" name="name" placeholder="Наименование"/>
-        <input type="checkbox" name="is_need"/>
-        <input type="number" name="count" min="0"/>
+        <input type="text" name="addName" placeholder="Наименование"/>
+        <input type="checkbox" name="addNeed"/>
+        <input type="number" name="addCount" min="0"/>
         <button type="submit">Добавить</button>
     </form>
 </body>

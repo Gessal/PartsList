@@ -13,7 +13,7 @@ public class Part {
 
     private String name;
 
-    private Boolean is_need;
+    private Boolean need;
 
     private Integer count;
 
@@ -33,12 +33,12 @@ public class Part {
         this.name = name;
     }
 
-    public Boolean getIs_need() {
-        return is_need;
+    public Boolean getNeed() {
+        return need;
     }
 
-    public void setIs_need(Boolean is_need) {
-        this.is_need = is_need;
+    public void setNeed(Boolean is_need) {
+        this.need = is_need;
     }
 
     public Integer getCount() {

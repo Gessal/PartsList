@@ -14,4 +14,6 @@ public interface PartRepository extends CrudRepository<Part, Integer> {
     Optional<Part> findById(Integer id);
     Page<Part> findByName(String name, Pageable page);
     Page<Part> findAll(Pageable pageable);
+    Page<Part> findByNeed(Boolean need, Pageable page);
+    Page<Part> findByNameAndNeed(String name, Boolean need, Pageable page);
 }

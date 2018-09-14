@@ -3,49 +3,68 @@
 <head>
     <title>PARTS</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../static/css/style.css" th:href="@{/css/style.css}" />
 </head>
 <body>
-    <table border="1">
+    <table>
         <caption>Список деталей для сборки компьютеров на складе</caption>
         <tr>
-            <td><a th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='nameUp')}"><b>D</b></a><a th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='nameDown')}"><b>U</b></a><b>Наименование</b></td>
-            <td><b>Необходимость</b></td>
-            <td><a th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='countUp')}"><b>D</b></a><a th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='countDown')}"><b>U</b></a><b>Количество</b></td>
-            <td><b>Редактировать</b></td>
-            <td><b>Удалить</b></td>
+            <td class="nameCol">
+                <a class="down" th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='nameUp')}">
+                    <img width="10" height="10" th:src="@{/img/down.png}">
+                </a>
+                <a class="up" th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='nameDown')}">
+                    <img width="10" height="10" th:src="@{/img/up.png}">
+                </a>
+                <b>Наименование</b>
+            </td>
+            <td class="needCol"><b>Необходимость</b></td>
+            <td class="countCol">
+                <a class="down" th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='countUp')}">
+                    <img width="10" height="10" th:src="@{/img/down.png}">
+                </a>
+                <a class="up" th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='countDown')}">
+                    <img width="10" height="10" th:src="@{/img/up.png}">
+                </a>
+                <b>Количество</b></td>
+            <td class="editCol"><b>Редактировать</b></td>
+            <td class="delCol"><b>Удалить</b></td>
         </tr>
-        <tr th:each="part : ${parts}">
-            <td th:text="${part.name}"></td>
-            <td th:text="${part.need} ? 'Да' : 'Нет'"></td>
-            <td th:text="${part.count}"></td>
-            <td><a th:href="@{/Parts-List/edit(id=${part.id})}"><b>Редактировать</b></a></td>
-            <td><a th:href="@{/Parts-List/all(id=${part.id})}"><b>Удалить</b></a></td>
+        <tr class="data" th:each="part : ${parts}">
+            <td class="nameCol" th:text="${part.name}"></td>
+            <td class="needCol" th:text="${part.need} ? 'Да' : 'Нет'"></td>
+            <td class="countCol" th:text="${part.count}"></td>
+            <td class="editCol"><a th:href="@{/Parts-List/edit(id=${part.id})}"><b>Редактировать</b></a></td>
+            <td class="delCol"><a th:href="@{/Parts-List/all(id=${part.id})}"><b>Удалить</b></a></td>
         </tr>
         <tr class="emptyRow"></tr>
         <tr>
-            <td>Можно собрать</td>
-            <td th:text="${n}"></td>
-            <td>компьютеров.</td>
+            <td class="nameCol" colspan="2"><b>Можно собрать</b></td>
+            <td class="countCol"><b th:text="${n}"></b></td>
+            <td class="nameCol" colspan="2"><b>компьютеров.</b></td>
         </tr>
     </table>
-    <div>Страницы:
+    <div class="pages-block">Страницы:
         <tr th:each="page : ${pages}">
-            <td><a th:href="@{/Parts-List/all(find=${find}, need=${need}, page=${page})}"><b th:text="${page}"></b></a></td>
+            <td><a th:href="@{/Parts-List/all(find=${find}, need=${need}, page=${page}, sort=${sort})}"><b th:text="${page}"></b></a></td>
         </tr>
     </div>
-    <form method="get" action="/Parts-List/all">
+    <form class="find-form" method="get" action="/Parts-List/all">
+        <b>Поиск</b><br>
         <input type="text" name="find" placeholder="Поиск по названию" th:value="${find}"/>
-        <button type="submit">Поиск</button>
         <select name="need">
             <option value="all" th:selected="${selectedAll}">Все</option>
             <option value="y" th:selected="${selectedY}">Необходимые</option>
             <option value="n" th:selected="${selectedN}">Необязательные</option>
-        </select>
+        </select><br>
+        <button type="submit">Найти</button><br>
     </form>
-    <form method="post" action="add">
+    <form class="add-form" method="post" action="add">
+        <b>Добавление</b><br>
         <input type="text" name="addName" placeholder="Наименование"/>
-        <input type="checkbox" name="addNeed"/>
-        <input type="number" name="addCount" min="0"/>
+        Необходимость<input type="checkbox" name="addNeed"/><br>
+        Количество<input class="count-input" type="number" name="addCount" min="0" value="1"/>
         <button type="submit">Добавить</button>
     </form>
 </body>

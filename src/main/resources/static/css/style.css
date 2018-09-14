@@ -1,0 +1,77 @@
+table, td {
+    border: 1px solid black;
+	border-collapse: collapse;
+	padding: 8px;
+	width: 657px;
+}
+
+table > caption {
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.nameCol {
+	text-align: left;
+}
+
+.needCol, .editCol, .delCol {
+	text-align: center;
+	width: auto;
+}
+
+.needCol, .editCol, .countCol, .delCol {
+	text-align: center;
+}
+
+.data:nth-child(even) {
+	background-color: #C1C1C1;
+}
+
+.data:hover {
+	background-color: #969696;
+}	
+
+.emptyRow {
+	height: 20px;
+}
+
+.down, .up {
+    display: inline-block;
+}
+
+.pages-block {
+	align: left;
+	margin: 5px;
+}
+
+.find-form {
+	border: 1px solid black;
+	display: inline-block;
+	width: 308px;
+	padding: 8px;
+	background-color: #C1C1C1;
+}
+
+.add-form {
+	border: 1px solid black;
+	display: inline-block;
+	width: 305px;
+	padding: 8px;
+	margin-left: 5px;
+	background-color: #C1C1C1;
+}
+
+.count-input {
+	margin-left: 5px;
+	width: 40px;
+}
+
+.find-form > button {
+	margin-top: 5px;
+	width: 100%;
+}
+
+.add-form > button {
+	margin-top: 5px;
+	width: 170px;
+}

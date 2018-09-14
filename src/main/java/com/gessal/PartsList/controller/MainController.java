@@ -23,7 +23,9 @@ public class MainController {
         this.partRepository = partRepository;
     }
 
-    @PostMapping("add")
+    /* Вставка записи (детали) в базу.
+     * Пока не понял как можно обработку двух форм запихать в один @PostMapping. */
+    @PostMapping(params = {"addName", "addCount"})
     public String addNewPart (@RequestParam(name = "addName", required = false) String addName,
                               @RequestParam(name = "addNeed", required = false) Boolean addNeed,
                               @RequestParam(name = "addCount", required = false) Integer addCount, Model model) {
@@ -64,8 +66,14 @@ public class MainController {
         return "editPage";
     }
 
-    @PostMapping(path = "/all")
-    public String editPart (@RequestParam Integer id, @RequestParam(required = false) String name, @RequestParam(required = false) Boolean need, @RequestParam(required = false) Integer count, Model model) {
+    /* Редактирование записи (детали) в базе.
+     * Пока не понял как можно обработку двух форм запихать в один @PostMapping. */
+    @PostMapping(params = "id")
+    public String editPart (@RequestParam(name = "id") Integer id,
+                            @RequestParam(name = "name", required = false) String name,
+                            @RequestParam(name ="need", required = false) Boolean need,
+                            @RequestParam(name = "count", required = false) Integer count,
+                            Model model) {
         if (!name.isEmpty() && count != null) {
             Optional<Part> op = partRepository.findById(id);
             if (op.isPresent()) {
@@ -93,8 +101,9 @@ public class MainController {
         return "mainPage";
     }
 
-    /******************Вывод всех записей********************/
-    @GetMapping(path="{path}") //TODO никак не использую значение path
+    /* Обработка всех GET запросов на странице "Parts-List".
+     * Можно конечно и по отдельности, но мне показалось, что так будет лучше. */
+    @GetMapping
     public String getAllParts(@RequestParam(required = false, defaultValue = "0") Integer id,
                               @RequestParam(name = "page", required = false, defaultValue = "1") String pageN,
                               @RequestParam(name = "find", required = false, defaultValue = "") String findName,

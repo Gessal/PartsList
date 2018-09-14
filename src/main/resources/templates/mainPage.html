@@ -11,20 +11,20 @@
         <caption>Список деталей для сборки компьютеров на складе</caption>
         <tr>
             <td class="nameCol">
-                <a class="down" th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='nameUp')}">
+                <a class="down" th:href="@{/Parts-List(find=${find}, need=${need}, sort='nameUp')}">
                     <img width="10" height="10" th:src="@{/img/down.png}">
                 </a>
-                <a class="up" th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='nameDown')}">
+                <a class="up" th:href="@{/Parts-List(find=${find}, need=${need}, sort='nameDown')}">
                     <img width="10" height="10" th:src="@{/img/up.png}">
                 </a>
                 <b>Наименование</b>
             </td>
             <td class="needCol"><b>Необходимость</b></td>
             <td class="countCol">
-                <a class="down" th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='countUp')}">
+                <a class="down" th:href="@{/Parts-List(find=${find}, need=${need}, sort='countUp')}">
                     <img width="10" height="10" th:src="@{/img/down.png}">
                 </a>
-                <a class="up" th:href="@{/Parts-List/all(find=${find}, need=${need}, sort='countDown')}">
+                <a class="up" th:href="@{/Parts-List(find=${find}, need=${need}, sort='countDown')}">
                     <img width="10" height="10" th:src="@{/img/up.png}">
                 </a>
                 <b>Количество</b></td>
@@ -36,7 +36,7 @@
             <td class="needCol" th:text="${part.need} ? 'Да' : 'Нет'"></td>
             <td class="countCol" th:text="${part.count}"></td>
             <td class="editCol"><a th:href="@{/Parts-List/edit(id=${part.id})}"><b>Редактировать</b></a></td>
-            <td class="delCol"><a th:href="@{/Parts-List/all(id=${part.id})}"><b>Удалить</b></a></td>
+            <td class="delCol"><a th:href="@{/Parts-List(id=${part.id})}"><b>Удалить</b></a></td>
         </tr>
         <tr class="emptyRow"></tr>
         <tr>
@@ -47,10 +47,10 @@
     </table>
     <div class="pages-block">Страницы:
         <tr th:each="page : ${pages}">
-            <td><a th:href="@{/Parts-List/all(find=${find}, need=${need}, page=${page}, sort=${sort})}"><b th:text="${page}"></b></a></td>
+            <td><a th:href="@{/Parts-List(find=${find}, need=${need}, page=${page}, sort=${sort})}"><b th:text="${page}"></b></a></td>
         </tr>
     </div>
-    <form class="find-form" method="get" action="/Parts-List/all">
+    <form class="find-form" method="get" action="/Parts-List">
         <b>Поиск</b><br>
         <input type="text" name="find" placeholder="Поиск по названию" th:value="${find}"/>
         <select name="need">
@@ -60,7 +60,7 @@
         </select><br>
         <button type="submit">Найти</button><br>
     </form>
-    <form class="add-form" method="post" action="add">
+    <form class="add-form" method="post" action="/Parts-List">
         <b>Добавление</b><br>
         <input type="text" name="addName" placeholder="Наименование"/>
         Необходимость<input type="checkbox" name="addNeed"/><br>

@@ -7,7 +7,7 @@
           href="../static/css/style.css" th:href="@{/css/style.css}" />
 </head>
 <body>
-    <form class="add-form" method="post" action="/Parts-List/all">
+    <form class="add-form" method="post" action="/Parts-List">
         <b>Редактировать</b><br>
         <input type="hidden" name="id" th:value="${id}"/>
         <input type="text" name="name" placeholder="Наименование" th:value="${name}"/>
